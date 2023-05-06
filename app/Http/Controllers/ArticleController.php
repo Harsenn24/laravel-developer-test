@@ -26,11 +26,14 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $articles = Article::create([
-            'Title' => $request->title,
-            'Content' => $request->content,
-            'Articleimage' => $request->article_image,
-            'Articlecreator' => $request->article_creator,
+            'Title' => $request->input('title'),
+            'Content' => $request->input('content'),
+            'Articleimage' => $request->input('article_image'),
+            'Articlecreator' => $request->input('article_creator'),
         ]);
+
+        $upload_picture = $request->file('picture')->getClientOriginalName();
+        $request->file('picture')->move('storage', $upload_picture);
 
         return response()->json([
             'data' => $articles
